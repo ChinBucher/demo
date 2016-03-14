@@ -8,6 +8,7 @@ editor demo
 
 
 关于contenteditable, 在w3c的wen档中这样描述:
+<https://w3c.github.io/editing/contentEditable.html>
 The contenteditable attribute is an enumerated attribute whose keywords are the empty string (“”), “events”, “caret”, “typing”, “plaintext-only”, “true”, and “false”. There is one additional state, the inherit state, which is the missing value default (and the invalid value default).
 
 参数：

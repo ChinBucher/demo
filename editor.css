@@ -1,0 +1,25 @@
+		*{ 
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		body{ 
+			font-size: 20px;
+			font-family: "Microsoft Yahei", Georgia, Serif;
+		}
+		.tool{
+			margin-top: 1%;
+			border: 1px solid silver;
+			border-radius: 5px;
+ 			background-color: #F2F2F2;
+		}
+		.edittable, .display{ 
+			resize: vertical;
+			overflow: auto;
+			border: 1px solid silver;
+			border-radius: 5px;
+			min-height: 400px;
+			padding: 1em;
+			margin-top: 20px;
+			box-shadow: inset 0 0 10px silver;
+		}
