@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+	<meta http-equiv="X-UA-Compatiable" content="IE=Edge">
+	<meta charset="utf-8">
+	<title>editor-test</title>
+	<link rel="stylesheet" href="editor.css">
+	<script type="text/javascript" src="editor.js"></script>
+</head>
+<body>
+	<!-- 编辑器菜单 -->
+	<div class="tool">
+		<span>Size:</span>
+		<select id="size">
+			<option value="3">Tiny</option>
+			<option value="4">Small</option>
+			<option value="5">Normal</option>
+			<option value="6">Big</option>
+			<option value="7">Larage</option>
+		</select>
+		&nbsp;
+		<span>Color:</span>
+		<select id="color">
+			<option value="red" style="color:red;">red</option>
+			<option value="yellow" style="color:yellow;">yellow</option>
+			<option value="blue" style="color:blue;">blue</option>
+		</select>
+		&nbsp;
+		<span><strong>B</strong></span>
+		<input id="bold" type="checkbox">
+		&nbsp;
+		<span><i>I</i></span>
+		<input id="italic" type="checkbox">
+		&nbsp;
+		<span style="text-decoration:underline">U</span>
+		<input id="underline" type="checkbox">
+	</div>
+	<!-- 文本编辑区 -->
+	<div class="edittable" id="editer">i just want to test it will work </div>
+	<!-- 按钮组 -->
+	<button id="edit" style="display:none;" >edit</button>
+	<button id="submmit">submit</button>
+</body>
+</html>
