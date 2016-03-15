@@ -20,3 +20,19 @@ contenteditable="true"
 contenteditable="false"
 
 优化富文本：其他的不管，只看 plaintext-only --> 只支持纯文本
+
+#对于富文本的处理：
+1.通过CSS设置：user-modify
+  user-modify: read-only;
+  user-modify: read-write;
+  user-modify: write-only;
+  user-modify: read-write-plaintext-only;
+2.通过JS处理：
+  ①document.selection || window.getSelection 选中文本 
+  [JavaScript 标准 selection 操作]
+<http://www.cnblogs.com/rainman/archive/2011/02/27/1966482.html>
+  ②getRangeAt(index) 获取range对象
+  ③TextRange  创建TextRange对象，将输入内容处理，过滤恶意代码
+  ④将处理后的内容重新插入
+  [TextRange的常用属性与方法]
+<http://blog.csdn.net/truong/article/details/18658895>
