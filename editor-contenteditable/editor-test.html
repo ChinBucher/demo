@@ -4,10 +4,11 @@
 	<meta http-equiv="X-UA-Compatiable" content="IE=Edge">
 	<meta charset="utf-8">
 	<title>editor-test</title>
-	<link rel="stylesheet" href="editor.css">
-	<script type="text/javascript" src="editor.js"></script>
+	<link rel="stylesheet" href="css/editor.css">
+
 </head>
 <body>
+<div>
 	<!-- 编辑器菜单 -->
 	<div class="tool">
 		<span>Size:</span>
@@ -38,7 +39,110 @@
 	<!-- 文本编辑区 -->
 	<div class="edittable" id="editer">i just want to test it will work </div>
 	<!-- 按钮组 -->
-	<button id="edit" style="display:none;" >edit</button>
-	<button id="submmit">submit</button>
+	<div>
+		<button id="edit" style="display:none;" >edit</button>
+		<button id="submmit">submit</button>
+	</div>
+</div>
+<!-- 外部js -->
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/editor.js"></script>
+	<script type="text/javascript">
+	/*
+			$("#editer").blur(function(){
+			    console.log("blur");
+			  });
+
+			$("#editer").onpaste = function(){ 
+				console.log("onpaste");
+			}
+
+			$("#editer").keyup = function(){ 
+				console.log("keyup");
+			}
+
+			function fliter(){ 
+				console.log("fliter");
+				var clipboard = e.clipboardData,
+					text = clipboard.getData("text/plain"),
+					sel = window.getSelection();
+				if(sel.getRangeAt && sel.rangeCount){ 
+					var range = sel.getRangeAt(0),
+						frag = document.createDocumentFragment(),
+						node,
+						lastnode;
+					rang.deleteContents();
+					var ele = document.createElement("div");
+					ele.innerHTML = text;
+					while(node = el.firstChild){ 
+						lastNode = frag.appendChild(node);
+					}
+
+					range.insertNode(frag);
+
+					if(lastNade){ 
+						range = range.cloneRange();
+						range.setStartAfter(lastNode);
+						range.collapse(true);
+						sel.removeAllRanges();
+						sel.addRange(range);
+					}
+				}
+			}
+			*/
+
+		    
+		    $(this).on('paste', function(e) {
+		        e.preventDefault();
+		        var text = null;
+		    
+		        if(window.clipboardData && clipboardData.setData) {
+		            // IE
+		            text = window.clipboardData.getData('text');
+		        } else {
+		            text = (e.originalEvent || e).clipboardData.getData('text/plain') || prompt('在这里输入文本');
+		        }
+		        if (document.body.createTextRange) {    
+		            if (document.selection) {
+		                textRange = document.selection.createRange();
+		            } else if (window.getSelection) {
+		                sel = window.getSelection();
+		                var range = sel.getRangeAt(0);
+		                
+		                // 创建临时元素，使得TextRange可以移动到正确的位置
+		                var tempEl = document.createElement("span");
+		                tempEl.innerHTML = "&#FEFF;";
+		                range.deleteContents();
+		                range.insertNode(tempEl);
+		                textRange = document.body.createTextRange();
+		                textRange.moveToElementText(tempEl);
+		                tempEl.parentNode.removeChild(tempEl);
+		            }
+		            textRange.text = text;
+		            textRange.collapse(false);
+		            textRange.select();
+		        } else {
+		            // Chrome之类浏览器
+		            document.execCommand("insertText", false, text);
+		        }
+		    });
+		    // 去除Crtl+b/Ctrl+i/Ctrl+u等快捷键
+		    $(this).on('keydown', function(e) {
+		        // e.metaKey for mac
+		        if (e.ctrlKey || e.metaKey) {
+		            switch(e.keyCode){
+		                case 66: //ctrl+B or ctrl+b
+		                case 98: 
+		                case 73: //ctrl+I or ctrl+i
+		                case 105: 
+		                case 85: //ctrl+U or ctrl+u
+		                case 117: {
+		                    e.preventDefault();    
+		                    break;
+		                }
+		            }
+		        }    
+		    });
+	</script>
 </body>
 </html>
