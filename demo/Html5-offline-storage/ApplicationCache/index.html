@@ -1,0 +1,223 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" manifest="cache.manifest">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>offline storage</title>
+	<!-- CSS -->
+</head>
+<body>
+	<!-- content -->
+	<div class="container">
+		<div class="manifest">
+			<div>
+				<h2>manifest</h2>
+				<p>
+				CACHE:<br/>
+				这个是manifest文件的默认入口，在此入口之后罗列的文件 (或直接写在CACHE MANIFEST后的文件)在它们下载到本地后会被缓存起来<br/>
+				NETWORK:<br/>
+				可选的，在此节后面所罗列的文件是需要访问网络的，即使用户离线访问了也会直接跳过缓存而访问服务器
+				<br/>
+				FALLBACK:<br/>
+				可选的，用来指定资源无法访问时的回调页面。每一行包括两个URI，第一个是资源文件URI，第二个是回调页面URI。
+				</p>
+				<p>备注：以上描述的这些节是没有先后顺序的，而且在同一个manifest中可以多次出现</p>
+			</div>
+			
+			<div>
+				<h2>步骤</h2>
+				<p>
+					<ul>
+						<li>配置服务器manifest文件的MIME类型；</li>
+						<li>编写manifest文件；</li>
+						<li>在页面的html标签的manifest属性中引用写好的manifest文件。</li>
+					</ul>	
+				</p>	
+			</div>
+			
+			<div>
+				<h2><em>注意事项:</em></h2>
+				<p>
+					<ul>
+						<li>cache.manifest 文件的MIME类型是text/cache-manifest，至于如何让web服务器返回.manifest文件时添加 </li>
+						<li>Content-Type: text/cache-manifest，不同服务器配置细节不同，此处不展开cache.manifest写法以CACHE MANIFEST开头，文件编码格式必须是utf-8</li>
+						<li>引用cache.manifest的html文档会被默认包含进缓存清单</li>
+					</ul>
+				</p>
+			</div>
+			
+			<div>
+				<h2>小技巧</h2>
+				<p>
+					web应用的缓存只有在manifest文件被修改的情况下才会被更新，所以如果你只是修改了被缓存的文件，那么用户本地的缓存还是不会被更新的，但是你可以通过修改manifest文件来告诉浏览器需要更新缓存了。利用这点，你可以在 manifest 文件中写一句版本号，注释一个文件版本。<br/>
+					这样写有三个好处：
+					<ul style="list-style-type:decimal">
+						<li>
+							你可以很明确的了解离线web应用的版本
+						</li>
+						<li>
+							通过简单的修改这个版本号就可以轻易的通知浏览器更新
+						</li>
+						<li>
+							你可以配合JavaScript程序来完成缓存更新
+						</li>
+					</ul>
+				</p>
+			</div>
+
+			<div>
+				<h2>如何更新离线存储？</h2>
+				<ul style="list-style-type:decimal">
+					<li>
+						用户清除了离线存储的数据，这个不一定就是清理浏览器历史记录就可以做到的，因为不同浏览器管理离线存储的方式不同。比如Firefox的离线存储数据要到“选项”=>“高级”=>“网络”=>“脱机存储”里才可以清除。
+					</li>
+					<li>
+						manifest文件被修改，上面说的，你修改了manifest文件里所罗列的文件也不会更新缓存，而是要替换manifest文件
+					</li>
+					<li>
+						使用JavaScript api编写更新程序
+					</li>
+				</ul>
+			</div>
+
+			<div>
+				<h2>applicationCache对象,属性 以及 事件</h2>
+				<p>
+					<h4>cache = window.applicationCache</h4>
+					返回应用于当前window对象文档的ApplicationCache对象
+					<br/>
+					<h4>cache = self.applicationCache</h4>
+					返回应用于当前shared worker的ApplicationCache对象 [shared worker]
+					<br/>
+					<h4>cache.status</h4>
+					返回当前应用的缓存状态，status有五种无符号短整型值的状态：<br/>
+					UNCACHED = 0;<br/>
+					//未缓存，此时，ApplicationCache对象的缓存宿主与应用缓存无关联<br/>
+					IDLE = 1;<br/>
+					//空闲，缓存清单指定的文件已经全部被页面缓存，此时状态就是IDLE<br/>
+					CHECKING = 2;<br/>
+					//ApplicationCache对象的缓存宿主已经和一个应用缓存关联，页面正在检查当前离线缓存是否需要更新<br/>
+					DOWNLOADING = 3;<br/>
+					//页面正在下载需要更新的缓存文件<br/>
+					UPDATEREADY = 4;<br/>
+					 //页面缓存更新完毕<br/>
+					OBSOLETE = 5;<br/>
+					//缓存过期，比如页面检查缓存是否过期时，发现服务器上的.manifest文件被删掉了<br/>
+
+					<h4>cache.update()</h4>
+					调用当前应用资源下载过程<br/>
+					//update方法调用时，页面会主动与服务器通信，检查页面当前的缓存是否为最新的，如不是，则下载更新后的资源<br/>
+					<h4>cache.swapCache()</h4>
+					更新到最新的缓存，这个不会使得之前加载的资源突然被重新加载。图片不会重新加载，样式和脚本也不会重新渲染或解析，唯一的变化是在此之后发出请求页面的资源是最新的
+				</p>
+				<h3>备注：</h3>
+				<p>
+					如果update方法被调用了，浏览器user agent就必须在后台调用应用缓存下载过程；如果swapCache方法被调用了，浏览器user agent会执行以下步骤：<br>
+					<ul style="list-style-type:decimal">
+						<li>
+							检查ApplicationCache的缓存宿主是否与应用缓存关联
+						</li>
+						<li>
+							让cache成为ApplicationCache对象的缓存宿主关联的应用缓存
+						</li>
+						<li>
+							如果cache的应用缓存组被标记为obsolete，那么就取消cache与ApplicationCache对象的缓存宿主的关联并取消这些步骤，此时所有资源都会从网络中下载而不是从缓存中
+						</li>
+						<li>
+							检查在同一个缓存组中是否存在完成标志为“完成”的应用缓存，并且版本比cache更新
+						</li>
+						<li>
+							让完成标志为“完成”的新cache成为最新的应用缓存
+						</li>
+						<li>
+							取消cache与ApplicationCache对象的缓存宿主的关联并用新cache代替关联
+						</li>
+					</ul>
+					<p>
+						<em>简而言之:</em>当没有调用cache.swapCache()时候，即使重新请求cache.js，加载的还是缓存更新前的cache.js（老的缓存）;若调用了cache.swapCache()，则重新请求cache.js时，加载的是已经更新后的cache.js（最新的缓存）；
+					</p>
+				</p>
+
+				<table>
+					<tr>
+						<th>事件名</th>
+						<th>关联属性</th>
+						<th>事件释义</th>
+					</tr>
+					<tr>
+						<td>onchecking</td>
+						<td>CHECKING</td>
+						<td>applicationCache对象与页面的关联关系</td>
+					</tr>
+					<tr>
+						<td>ondownloading</td>
+						<td>DOWNLOADING</td>
+						<td>-</td>
+					</tr>
+					<tr>
+						<td>onupdateready</td>
+						<td>ONUPDATEREADY</td>
+						<td>-</td>
+					</tr>
+					<tr>
+						<td>onabsolete</td>
+						<td>OBSOLETE</td>
+						<td>-</td>
+					</tr>
+					<tr>
+						<td>oncache</td>
+						<td>IDLE</td>
+						<td>-</td>
+					</tr>
+					<tr>
+						<td>onerror</td>
+						<td>-</td>
+						<td>更新出错</td>
+					</tr>
+					<tr>
+						<td>onnoupdate</td>
+						<td>-</td>
+						<td>检查后发现缓存无需更新</td>
+					</tr>
+					<tr>
+						<td>onprogress</td>
+						<td></td>
+						<td>-</td>
+					</tr>
+				</table>
+
+			</div>
+
+			<div>
+				<h3><a href="http://yanhaijing.com/html/2014/12/28/html5-manifest/">自动化简历离线缓存</a></h3>
+			</div>
+			
+		</div>
+		
+	</div>
+</body>
+	<!-- script -->
+	<script src="./cache.js"></script>
+	<script type="text/javascript">
+		var cache = window.applicationCache;
+		console.log("test:" + test);
+
+		cache.update();
+		if(cache.status == window.applicationCache.UPDATEREADY){ 
+		    cache.swapCache();
+		}	
+
+		if(window.addEventListener){ 
+			cache.addEventListener("error",handleCacheError,false);
+		}else if(window.attachEvent){ 
+			cache.attachEvent("error",handleCacheError);
+		}	    
+
+		function handleCacheError(e){ 
+			alert("Error: cache failed to update!");
+		};
+
+
+		
+
+	</script>
+</html>

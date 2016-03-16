@@ -1,0 +1,14 @@
+CACHE MANIFEST
+# 注释：需要缓存的文件，无论在线与否，都从缓存中读取6
+./cache.js
+#./cache.css
+
+# 注释：不缓存的文件，无论缓存中是否存在，都重新获取
+NETWORK:
+#uncached.js
+#uncached.css
+
+# 注释: 获取不到资源是的备选路径。
+# 如：访问index.html失败，返回404
+FALLBACK:
+#index.html 404.html
