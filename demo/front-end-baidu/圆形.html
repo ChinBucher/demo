@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale-1">
+	<style type="text/css">
+	.sth{ 
+		text-align: center;
+	}
+	.container{ 
+		width: 400px;
+		height: 200px;
+		background-color: #ccc;
+	}
+	/* #1
+		.container{ 
+			position: absolute;
+			width: 400px;
+			height: 200px;
+			top: 50%;
+			left: 50%;
+			margin-left: -200px;
+			margin-top: -100px;
+			background-color: #EEEEE0;
+		}
+	*/
+	/* #2
+	.container{ 
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		margin-top: -100px;
+		margin-left: -200px;
+	}
+	*/
+	.container{ 
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		margin: auto;
+		overflow: hidden;
+	}
+	.left, .right{ 
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+		background-color: #fc0;
+		
+	}
+	.left{ 
+		margin-top: -50px;
+		margin-left: -50px;
+	}
+	.right{ 
+		margin-left: 350px;
+    	margin-top: 100px;
+	}
+	</style>
+</head>
+<body>
+	
+	<div class="container">
+		<div class="left"></div>
+		<label class="sth">元素居中 + 边框形状改变</label>
+		<div class="right"></div>
+	</div>
+</body>
+</html>
